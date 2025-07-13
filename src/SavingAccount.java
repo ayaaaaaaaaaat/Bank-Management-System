@@ -3,9 +3,11 @@ public class SavingAccount extends Account{
 
     // attributes
 
-    private static final double interestRate = 0.05;
+    private static final float interestRate = 0.05F;
     private static final int maxWithdrawalsPerMonth = 3;
+    private static final int maxTransfersPerMonth = 3;
     private int withdrawalsThisMonth = 0;
+    private int transfersThisMonth = 0;
     private int currentMonth = LocalDate.now().getMonthValue();
 
     // constructor(s)
@@ -18,6 +20,12 @@ public class SavingAccount extends Account{
 
     public static int getMaxWithdrawalsPerMonth() {
         return maxWithdrawalsPerMonth;
+    }
+
+    public static float getInterestRate(){return interestRate;}
+
+    public static int getMaxTransfersPerMonth() {
+        return maxTransfersPerMonth;
     }
 
     // methods
@@ -49,8 +57,29 @@ public class SavingAccount extends Account{
             return -2; // balance < amount
     }
 
-    public void applyInterest() {
-        balance += (float) (balance * interestRate);
+    @Override
+    public int transferMoney (float amount){
+        int currentMonth = LocalDate.now().getMonthValue();
+        if (currentMonth != this.currentMonth) {
+            this.currentMonth = currentMonth;
+            withdrawalsThisMonth = 0;
+        }
+        if (transfersThisMonth == maxTransfersPerMonth) {
+            return -2; // transfers limit reached for this month
+        }
+        boolean transferred =  (amount <= balance);
+        if (transferred){
+            balance-=amount;
+            transfersThisMonth++;
+            return 1;
+        }
+        // save it as a transaction
+        return -1;
     }
+
+    public void applyInterest() {
+        balance += (balance * interestRate);
+    }
+
 
 }

@@ -32,6 +32,7 @@ public abstract class Account {
 
     public abstract boolean deposit(float amount);
     public abstract int withdraw(float amount);
+    public abstract int transferMoney (float amount);
 
     // methods
 

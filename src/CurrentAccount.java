@@ -37,4 +37,14 @@ public class CurrentAccount extends Account{
         }
         return -1;
     }
+    @Override
+    public int transferMoney (float amount){
+        boolean transferred =  (amount <= balance+overdraftLimit);
+        if (transferred) {
+            balance -= amount;
+            return 1;
+        }
+        // save it as a transaction
+        return -1;
+    }
 }

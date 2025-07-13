@@ -15,7 +15,7 @@ public class Client extends User{
         super(firstName, lastName, username, phone, password, id);
         String accountNumber = username + UUID.randomUUID().toString();
         if(isCurrentAcc) {
-            //myAccount = new CurrentAccount(balance, isCurrentAcc, accountNumber);
+            myAccount = new CurrentAccount(balance, true, accountNumber);
         }
         else{
             myAccount = new SavingAccount(balance, false, accountNumber);
@@ -42,27 +42,23 @@ public class Client extends User{
 
     public void editPersonalInformation(int number){
 
+
+
+        // lesa hakamlha
+
     }
 
     public Client displayAccountDetails(){
         return new Client(firstName,lastName,username,phone,password,id, myAccount.getBalance(), myAccount.isCurrentAcc());
     }
 
-    public boolean transferMoney (float amount){
-        boolean transferred =  (amount <= myAccount.getBalance());
-        if (transferred)
-            myAccount.setBalance(myAccount.getBalance()-amount);
-        // save it as a transaction
-        return transferred;
-    }
-
-    public int requestCreditCard() {
+    public boolean requestCreditCard() {
         if (creditCard != null) {
-            return 1; // Already has a credit card
+            return false; // Already has a credit card
         } else {
             String cardNumber = "CARD-" + UUID.randomUUID().toString().substring(0, 8);
             creditCard = new CreditCard(username, cardNumber);
-            return 2; // Successfully issued
+            return true; // Successfully issued
         }
     }
 
